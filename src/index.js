@@ -73,57 +73,86 @@ setObstaclesWidth(1);
  */
 
  document.addEventListener("keydown", (event) => {
+  if (event.repeat) {
+    return;
+  }
+
   if (event.key === "ArrowUp") {
-    upArrowCharacterSprite();
-    // Get current row and update its position
-    const i = upperRow();
-    // Get current column
-    const j = currentColumn();
-    // If there isn't a boundary && if there isn't an object in this direction, update
-    console.log(`[${i}, ${j}]`);
-    if (i >= 0 && grid[i][j] === 0) {
-      character.style.top = i * tileDimensionInPixels + "px";
+    if (isCurrentSprite("upArrow", "(1)")) {
+      walkUp();
+      // Get current row and update its position
+      const i = upperRow();
+      // Get current column
+      const j = currentColumn();
+      // If there isn't a boundary && if there isn't an object in this direction, update
+      console.log(`[${i}, ${j}]`);
+      if (i >= 0 && grid[i][j] === 0) {
+        character.style.top = i * tileDimensionInPixels + "px";
+        return;
+      }
+      return;
     }
+    upArrowCharacterSprite();
+    return;
   }
 
   if (event.key === "ArrowRight") {
-    rightArrowCharacterSprite();
-    // Get current row
-    const i = currentRow();
-    // Get current column and update its position
-    const j = rightSideColumn();
-    // If there isn't a boundary && if there isn't an object in this direction, update
-    console.log(`[${i}, ${j}]`);
-    if (j < numberOfContainerBlocksX && grid[i][j] === 0) {
-      character.style.left = j * tileDimensionInPixels + "px";
+    if (isCurrentSprite("leftArrow", "(-1)")) {
+      walkRight();
+      // Get current row
+      const i = currentRow();
+      // Get current column and update its position
+      const j = rightSideColumn();
+      // If there isn't a boundary && if there isn't an object in this direction, update
+      console.log(`[${i}, ${j}]`);
+      if (j < numberOfContainerBlocksX && grid[i][j] === 0) {
+        character.style.left = j * tileDimensionInPixels + "px";
+        return;
+      }
+      return;
     }
+    rightArrowCharacterSprite();
+    return;
   }
 
   if (event.key === "ArrowDown") {
-    downArrowCharacterSprite();
-    // Get current row and update its position
-    const i = lowerRow();
-    // Get current column
-    const j = currentColumn();
-    // If there isn't a boundary && if there isn't an object in this direction, update
-    console.log(`[${i}, ${j}]`);
-    if (i < numberOfContainerBlocksY && grid[i][j] === 0) {
-      character.style.top = i * tileDimensionInPixels + "px";
+    if (isCurrentSprite("downArrow", "(1)")) {
+      walkDown();
+      // Get current row and update its position
+      const i = lowerRow();
+      // Get current column
+      const j = currentColumn();
+      // If there isn't a boundary && if there isn't an object in this direction, update
+      console.log(`[${i}, ${j}]`);
+      if (i < numberOfContainerBlocksY && grid[i][j] === 0) {
+        character.style.top = i * tileDimensionInPixels + "px";
+        return;
+      }
+      return;
     }
+    downArrowCharacterSprite();
+    return;
   }
 
   if (event.key === "ArrowLeft") {
-    leftArrowCharacterSprite()
-    // Get current row
-    const i = currentRow();
-    // Get current column  and update its position
-    const j = leftSideColumn();
-    // If there isn't a boundary && if there isn't an object in this direction, update
-    console.log(`[${i}, ${j}]`);
-    if (j >= 0 && grid[i][j] === 0) {
-      character.style.left = j * tileDimensionInPixels + "px";
+    if (isCurrentSprite("leftArrow", "(1)")) {
+      walkLeft();
+      // Get current row
+      const i = currentRow();
+      // Get current column  and update its position
+      const j = leftSideColumn();
+      // If there isn't a boundary && if there isn't an object in this direction, update
+      console.log(`[${i}, ${j}]`);
+      if (j >= 0 && grid[i][j] === 0) {
+        character.style.left = j * tileDimensionInPixels + "px";
+        return;
+      }
+      return;
     }
+    leftArrowCharacterSprite();
+    return;
   }
+  return;
 });
 
 /**
@@ -229,4 +258,44 @@ function leftArrowCharacterSprite() {
 function rightArrowCharacterSprite() {
   character.style.transform = "scaleX(-1)";
   character.style.content = "url('public/sprites/leftArrow.png')";
+}
+
+function isCurrentSprite(sprite, scaleX) {
+  if (character.style.content.includes(sprite) && character.style.transform.includes(scaleX)) {
+    return true
+  }
+
+  return false;
+}
+
+function walkDown() {
+  character.style.transform = "scaleX(1)";
+  character.style.content = "url('public/sprites/walkDown.png')";
+  setTimeout(() => {
+    downArrowCharacterSprite();
+  }, 250);
+}
+
+function walkUp() {
+  character.style.transform = "scaleX(1)";
+  character.style.content = "url('public/sprites/walkUp.png')";
+  setTimeout(() => {
+    upArrowCharacterSprite();
+  }, 250);
+}
+
+function walkLeft() {
+  character.style.transform = "scaleX(1)";
+  character.style.content = "url('public/sprites/walkLeft.png')";
+  setTimeout(() => {
+    leftArrowCharacterSprite();
+  }, 250);
+}
+
+function walkRight() {
+  character.style.transform = "scaleX(-1)";
+  character.style.content = "url('public/sprites/walkLeft.png')";
+  setTimeout(() => {
+    rightArrowCharacterSprite();
+  }, 250);
 }

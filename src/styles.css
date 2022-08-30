@@ -18,6 +18,7 @@ body {
   /* background-color: black; */
   image-rendering: pixelated;
   position: absolute;
+  transition: top 250ms linear, left 250ms linear;
 }
 
 .obstacle {
